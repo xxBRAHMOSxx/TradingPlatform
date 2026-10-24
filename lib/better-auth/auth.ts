@@ -1,11 +1,12 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { mongodbAdapter} from "better-auth/adapters/mongodb";
 import { connectToDatabase} from "@/database/mongoose";
 import { nextCookies} from "better-auth/next-js";
+import type { Db } from "mongodb";
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
 
-export const getAuth = async () => {
+export const getAuth = async (): Promise<ReturnType<typeof betterAuth>> => {
     if(authInstance) return authInstance;
 
     const mongoose = await connectToDatabase();
@@ -13,8 +14,8 @@ export const getAuth = async () => {
 
     if(!db) throw new Error('MongoDB connection not found');
 
-    authInstance = betterAuth({
-        database: mongodbAdapter(db as any),
+    const options: BetterAuthOptions = {
+        database: mongodbAdapter(db as Db),
         secret: process.env.BETTER_AUTH_SECRET,
         baseURL: process.env.BETTER_AUTH_URL,
         emailAndPassword: {
@@ -26,9 +27,11 @@ export const getAuth = async () => {
             autoSignIn: true,
         },
         plugins: [nextCookies()],
-    });
+    };
+    const instance = betterAuth(options);
 
-    return authInstance;
+    authInstance = instance;
+    return instance;
 }
 
 export const auth = await getAuth();

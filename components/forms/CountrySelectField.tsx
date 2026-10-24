@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
-
-import  { Control, Controller, FieldError } from 'react-hook-form';
-import type {  FieldPath, FieldValues, } from 'react-hook-form';
+import { Controller, FieldError, FieldValues, Control, FieldPath } from 'react-hook-form';
 import {
     Popover,
     PopoverContent,
@@ -117,7 +114,7 @@ const CountrySelect = ({
     );
 };
 
-export const CountrySelectField = <TFieldValues extends FieldValues>({
+export const CountrySelectField = <TFieldValues extends FieldValues,>({
     name,
     label,
     control,
