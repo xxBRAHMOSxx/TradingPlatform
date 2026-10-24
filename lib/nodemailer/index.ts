@@ -18,7 +18,7 @@ export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData)
         from: `"Trader's Platform" <Trader's Platform@jsmastery.pro>`,
         to: email,
         subject: `Welcome to Trader's Platform - your stock market toolkit is ready!`,
-        text: 'Thanks for joining Trader's Platform',
+        text: "Thanks for joining Trader's Platform",
         html: htmlTemplate,
     }
 
