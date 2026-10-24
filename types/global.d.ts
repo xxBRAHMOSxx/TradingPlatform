@@ -13,6 +13,12 @@ declare global {
         password: string;
     };
 
+    type UserForNewsEmail = {
+    id: string;
+    email: string;
+    name: string;
+};
+
     type SignUpFormData = {
         fullName: string;
         email: string;
