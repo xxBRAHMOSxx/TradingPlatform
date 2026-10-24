@@ -2,7 +2,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Control, Controller, FieldError } from 'react-hook-form';
+
+import  { Control, Controller, FieldError } from 'react-hook-form';
+import type {  FieldPath, FieldValues, } from 'react-hook-form';
 import {
     Popover,
     PopoverContent,
@@ -22,18 +24,18 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import countryList from 'react-select-country-list';
 
-type CountrySelectProps = {
-    name: string;
+type CountrySelectProps<TFieldValues extends FieldValues> = {
+    name: FieldPath<TFieldValues>;
     label: string;
-    control: Control<any>;
+    control: Control<TFieldValues>;
     error?: FieldError;
     required?: boolean;
 };
 
 const CountrySelect = ({
-                           value,
-                           onChange,
-                       }: {
+    value,
+    onChange,
+}: {
     value: string;
     onChange: (value: string) => void;
 }) => {
@@ -115,13 +117,13 @@ const CountrySelect = ({
     );
 };
 
-export const CountrySelectField = ({
-                                       name,
-                                       label,
-                                       control,
-                                       error,
-                                       required = false,
-                                   }: CountrySelectProps) => {
+export const CountrySelectField = <TFieldValues extends FieldValues>({
+    name,
+    label,
+    control,
+    error,
+    required = false,
+}: CountrySelectProps<TFieldValues>) => {
     return (
         <div className='space-y-2'>
             <Label htmlFor={name} className='form-label'>
@@ -133,9 +135,7 @@ export const CountrySelectField = ({
                 rules={{
                     required: required ? `Please select ${label.toLowerCase()}` : false,
                 }}
-                render={({ field }) => (
-                    <CountrySelect value={field.value} onChange={field.onChange} />
-                )}
+                render={({ field }) => <CountrySelect value={field.value} onChange={field.onChange} />}
             />
             {error && <p className='text-sm text-red-500'>{error.message}</p>}
             <p className='text-xs text-gray-500'>
