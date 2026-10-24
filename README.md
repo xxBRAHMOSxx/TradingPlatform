@@ -2,8 +2,7 @@
 
 
   <div>
-    <a href='https://trading-platform-green-one.vercel.app/
-'>#Live-site</a><br/>
+   
     <img src="https://img.shields.io/badge/-Next.js-black?style=for-the-badge&logoColor=white&logo=next.js&color=black"/>
     <img src="https://img.shields.io/badge/-Better Auth-black?style=for-the-badge&logoColor=white&logo=betterauth&color=black"/>
 <img src="https://img.shields.io/badge/-Shadcn-black?style=for-the-badge&logoColor=white&logo=shadcnui&color=black"/>
@@ -16,7 +15,8 @@
 
   </div>
 
-  <h3 align="center">Stock Market App — Alerts, Charts, AI Insights</h3>
+  <h3 align="center">Stock Market App — Alerts, Charts, AI Insights  <a href='https://trading-platform-green-one.vercel.app/
+'>#Live-site</a></h3>
 
 
 ## <a name="introduction">✨ Introduction</a>
