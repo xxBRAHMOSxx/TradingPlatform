@@ -1,5 +1,5 @@
-import { BotComponent } from '@/components/bot/Bot';
-import { BotLauncher } from '@/components/bot/bot-launcher';
+
+
 import TradingViewWidget from "@/components/TradingViewWidget";
 import {
     HEATMAP_WIDGET_CONFIG,
@@ -52,7 +52,7 @@ const Home = () => {
                 </div>
 
             </section>
-            <BotLauncher />
+        
         </div>
     )
 }
