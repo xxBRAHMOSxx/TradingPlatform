@@ -33,12 +33,16 @@ export function BotPanel({
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
   // auto-scroll to bottom on new message
-  React.useEffect(() => {
-    const el = scrollRef.current?.querySelector(
-      '[data-radix-scroll-area-viewport]'
-    ) as HTMLElement | null
-    if (el) el.scrollTop = el.scrollHeight
-  }, [messages, pending])
+React.useEffect(() => {
+  const el = scrollRef.current?.querySelector(
+    '[data-radix-scroll-area-viewport]'
+  ) as HTMLElement | null
+  if (!el) return
+
+  requestAnimationFrame(() => {
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+  })
+}, [messages, pending])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -74,8 +78,8 @@ export function BotPanel({
       </div>
 
       {/* Messages */}
-      <ScrollArea ref={scrollRef} className="flex-1 px-4">
-        <div className="flex flex-col gap-3 py-4">
+      <ScrollArea ref={scrollRef} className="flex-1 px-4 overflow-auto">
+        <div className="flex flex-col gap-3 py-4 ">
           {messages.length === 0 && (
             <p className="text-center text-sm text-muted-foreground">
               Ask me anything to get started.
