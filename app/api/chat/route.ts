@@ -3,28 +3,40 @@ import { GoogleGenAI } from '@google/genai'
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
+// --- Type definitions ---
+type ChatRole = 'user' | 'assistant'
+
+interface IncomingMessage {
+  id?: string
+  role: ChatRole
+  content: string
+}
+
+// The new Interactions API step structure
+interface InteractionStep {
+  type: 'user_input' | 'model_output'
+  content: Array<{ type: 'text'; text: string }>
+}
+
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json()
+    const body: { messages?: IncomingMessage[] } = await req.json()
+    const messages = body.messages
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 })
     }
 
-    // Convert frontend messages to the step format required by the Interactions API
-    const history: any[] = []
-    for (const m of messages.slice(0, -1)) {
-      history.push({
-        type: m.role === 'user' ? 'user_input' : 'model_output',
-        content: [{ type: 'text', text: m.content }],
-      })
-    }
+    // Convert history to the steps format required by the Interactions API
+    const history: InteractionStep[] = messages.slice(0, -1).map((m) => ({
+      type: m.role === 'user' ? 'user_input' : 'model_output',
+      content: [{ type: 'text', text: m.content }],
+    }))
 
     const last = messages[messages.length - 1]
 
-    // The new API uses input to receive the full history, with store: false for stateless mode
     const interaction = await ai.interactions.create({
-      model: 'gemini-3.6-flash',
+      model: 'gemini-3.6-flash', // or gemini-3.8-flash, whichever you're using
       store: false,
       input: [
         ...history,
@@ -32,7 +44,6 @@ export async function POST(req: Request) {
       ],
     })
 
-    // The new API extracts text via output_text
     const reply = interaction.output_text
 
     return NextResponse.json({ reply })
