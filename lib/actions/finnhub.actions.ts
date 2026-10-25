@@ -18,6 +18,7 @@ type FinnhubSearchResultWithExchange = FinnhubSearchResult & {
 };
 
 async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T> {
+  
   const options: RequestInit & { next?: { revalidate?: number } } = revalidateSeconds
     ? { cache: 'force-cache', next: { revalidate: revalidateSeconds } }
     : { cache: 'no-store' };

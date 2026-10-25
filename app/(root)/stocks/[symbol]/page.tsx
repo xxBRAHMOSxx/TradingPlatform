@@ -12,6 +12,19 @@ import {
 export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+  let height = 600;
+
+  //custom function for a custom fullscreen button for chart widget based on the device dimensions
+  const setHeight = (widgetType: string) => {
+    const windowHeight = window.innerHeight;
+    if (widgetType === "chart") {
+      if (windowHeight < 600) {
+        height = windowHeight - 100; // Adjust the height based on your needs
+      } else {
+        height = 600; // Default height for larger screens
+      }
+    }
+  }
 
   return (
     <div className="flex min-h-screen p-4 md:p-6 lg:p-8">
